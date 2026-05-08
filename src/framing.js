@@ -1,61 +1,28 @@
-const HEADER_SEPARATOR = "\r\n\r\n";
-
 export function encodeMessage(message) {
-  const body = Buffer.from(JSON.stringify(message), "utf8");
-  const header = Buffer.from(`Content-Length: ${body.length}${HEADER_SEPARATOR}`, "ascii");
-  return Buffer.concat([header, body]);
+  return Buffer.from(`${JSON.stringify(message)}\n`, "utf8");
 }
 
 export class MessageReader {
   constructor(onMessage) {
     this.onMessage = onMessage;
-    this.buffer = Buffer.alloc(0);
+    this.buffer = "";
   }
 
   push(chunk) {
-    this.buffer = Buffer.concat([this.buffer, chunk]);
+    this.buffer += chunk.toString("utf8");
 
     while (true) {
-      const parsed = this.#tryReadMessage();
-      if (parsed === null) {
+      const newlineIndex = this.buffer.indexOf("\n");
+      if (newlineIndex === -1) {
         return;
       }
 
-      this.onMessage(parsed);
-    }
-  }
+      const line = this.buffer.slice(0, newlineIndex).replace(/\r$/, "");
+      this.buffer = this.buffer.slice(newlineIndex + 1);
 
-  #tryReadMessage() {
-    const headerEnd = this.buffer.indexOf(HEADER_SEPARATOR);
-    if (headerEnd === -1) {
-      return null;
-    }
-
-    const header = this.buffer.subarray(0, headerEnd).toString("ascii");
-    const contentLength = readContentLength(header);
-    const bodyStart = headerEnd + Buffer.byteLength(HEADER_SEPARATOR);
-    const bodyEnd = bodyStart + contentLength;
-
-    if (this.buffer.length < bodyEnd) {
-      return null;
-    }
-
-    const body = this.buffer.subarray(bodyStart, bodyEnd).toString("utf8");
-    this.buffer = this.buffer.subarray(bodyEnd);
-    return JSON.parse(body);
-  }
-}
-
-function readContentLength(header) {
-  for (const line of header.split("\r\n")) {
-    const [name, ...valueParts] = line.split(":");
-    if (name.toLowerCase() === "content-length") {
-      const value = Number.parseInt(valueParts.join(":").trim(), 10);
-      if (Number.isFinite(value) && value >= 0) {
-        return value;
+      if (line.length > 0) {
+        this.onMessage(JSON.parse(line));
       }
     }
   }
-
-  throw new Error("Missing Content-Length header");
 }
