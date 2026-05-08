@@ -96,6 +96,46 @@ You can add that JSON through Claude Code with:
 claude mcp add-json --scope local codex-image '{"command":"bun","args":["/absolute/path/to/codex-image-mcp/src/server.js"],"env":{"CODEX_IMAGE_OUTPUT_DIR":"/absolute/path/to/generated-images"}}'
 ```
 
+## Notes for Agents
+
+If you are another coding agent installing or using this MCP on a user's machine, treat it as a local tool that can spend the user's Codex/image-generation quota and write image files to disk.
+
+Recommended install flow:
+
+```sh
+git clone <repo-url> codex-image-mcp
+cd codex-image-mcp
+bun install
+bun test
+```
+
+Before registering the MCP, verify prerequisites without changing global state:
+
+```sh
+bun --version
+codex --version
+```
+
+Do not run `codex login`, change Claude Code MCP scope, or trigger a real image generation unless the user has asked you to do so or approved it. `codex login` may open an interactive auth flow, and real image generation can consume quota.
+
+When adding this MCP to Claude Code, prefer local scope unless the user explicitly asks otherwise:
+
+```sh
+claude mcp add --scope local \
+  -e CODEX_IMAGE_OUTPUT_DIR="$HOME/Pictures/codex-images" \
+  codex-image -- bun "$PWD/src/server.js"
+```
+
+Agent considerations:
+
+- Use absolute paths in MCP configuration when possible. `"$PWD/src/server.js"` is fine when you are running the command from this repository.
+- Keep `CODEX_IMAGE_OUTPUT_DIR` outside source directories unless the user wants generated assets committed to a project.
+- Do not use `--scope project` or write `.mcp.json` unless the user wants the MCP shared with that project.
+- Default to the SDK backend. Use `backend: "cli"` or `CODEX_IMAGE_BACKEND=cli` only when debugging the SDK path or when the user requests the raw CLI fallback.
+- For large images or automation, pass `returnImageData: false` so the MCP returns file metadata without embedding base64 image data in the tool response.
+- If the environment is sandboxed and Codex or Claude Code cannot access auth files, network, or the output directory, surface that clearly and request the narrow permission needed.
+- Generated output should be treated as user data. Do not delete, overwrite, or commit generated files unless the user asked for that.
+
 ## Tool
 
 `generate_image`
