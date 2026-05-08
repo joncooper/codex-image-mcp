@@ -1,0 +1,6 @@
+node_modules/
+codex-images/
+.npm-cache/
+.DS_Store
+coverage/
+*.log

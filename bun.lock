@@ -1,0 +1,29 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 0,
+  "workspaces": {
+    "": {
+      "name": "codex-image-mcp",
+      "dependencies": {
+        "@openai/codex-sdk": "^0.129.0",
+      },
+    },
+  },
+  "packages": {
+    "@openai/codex": ["@openai/codex@0.129.0", "", { "optionalDependencies": { "@openai/codex-darwin-arm64": "npm:@openai/codex@0.129.0-darwin-arm64", "@openai/codex-darwin-x64": "npm:@openai/codex@0.129.0-darwin-x64", "@openai/codex-linux-arm64": "npm:@openai/codex@0.129.0-linux-arm64", "@openai/codex-linux-x64": "npm:@openai/codex@0.129.0-linux-x64", "@openai/codex-win32-arm64": "npm:@openai/codex@0.129.0-win32-arm64", "@openai/codex-win32-x64": "npm:@openai/codex@0.129.0-win32-x64" }, "bin": { "codex": "bin/codex.js" } }, "sha512-8zZlcO4ploUzULJ3xT5qx8eOCL/L7gOrpWXCtr2kP568idZjWhbz3L2WE8BvjBDUF17WMDhjOklCj6DGd1cKfQ=="],
+
+    "@openai/codex-darwin-arm64": ["@openai/codex@0.129.0-darwin-arm64", "", { "os": "darwin", "cpu": "arm64" }, "sha512-tVFwzbh612oip/yZMeQziMtUWLz08A8ChhS6U/bNZjCKWD11bQvDZjxZJNzhWvmom/gKeXstwoUp9u1S8eCcnA=="],
+
+    "@openai/codex-darwin-x64": ["@openai/codex@0.129.0-darwin-x64", "", { "os": "darwin", "cpu": "x64" }, "sha512-BtGc4ujzxRVIB0DcpiehP7/aQeAGEi0pNd9C98rtIqy1OBMwhOZ3ri/achzP0lxw8LWWFp8sL+hQdTGze6SGwg=="],
+
+    "@openai/codex-linux-arm64": ["@openai/codex@0.129.0-linux-arm64", "", { "os": "linux", "cpu": "arm64" }, "sha512-VnjI4Xla4uwaAqYCekwBm4dlucvaduTdhVr3bqU+6qfG5N9yn1bR7ZS7xMRlaRgS0oIst9fgYyC2niSYPOzuDA=="],
+
+    "@openai/codex-linux-x64": ["@openai/codex@0.129.0-linux-x64", "", { "os": "linux", "cpu": "x64" }, "sha512-YwkJtcHXeXdI+cfdv7qKGfafwePEEbSCRL5Z++/8djnI+iBj6nIMz4ouhe12yvsMccVqNTtCH8H0QrygHARpNg=="],
+
+    "@openai/codex-sdk": ["@openai/codex-sdk@0.129.0", "", { "dependencies": { "@openai/codex": "0.129.0" } }, "sha512-KL/41uj5UDJW97/CtFU3Z0FtT7/dqcOscMYRUMnNnTGZSXKLZJV0A+a5OmXey8aFO6LR7Q62alnG1L2LkGHSmg=="],
+
+    "@openai/codex-win32-arm64": ["@openai/codex@0.129.0-win32-arm64", "", { "os": "win32", "cpu": "arm64" }, "sha512-8rwpYBKg/vI3IHZB2ggFmIDz+4slG7mfYTFoQtRw2m2KMS1g1XMOJK9heM80NMiCY3hqmyMN81bOQ7aKAmgFLg=="],
+
+    "@openai/codex-win32-x64": ["@openai/codex@0.129.0-win32-x64", "", { "os": "win32", "cpu": "x64" }, "sha512-yP59c7O3J8zZ/eyN6HXMeeZ2xksJE8/Xy9kn3qznC7jCN3GEtM7B6Wv4gEY5F/jzik+B+tU71rmkGmqzQjfVVQ=="],
+  }
+}
